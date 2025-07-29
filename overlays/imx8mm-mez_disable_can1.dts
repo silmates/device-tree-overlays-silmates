@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2020-2022 Silmates
+ */
+
+// Disable CAN1 
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "silmates,imx8mm-mez";
+};
+
+&can1 {
+	status = "disabled";
+};
+

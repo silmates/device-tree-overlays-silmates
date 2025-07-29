@@ -1,0 +1,17 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2022 Silmates
+ */
+
+// 20MHz CAN1 Crystal 
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "silmates,imx8mm-mez";
+};
+
+&clk40m {
+	clock-frequency = <20000000>;
+};

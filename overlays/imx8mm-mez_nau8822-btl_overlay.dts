@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2023 Silmates
+ */
+
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "silmates,imx8mm-mez";
+};
+
+// Allow configuring the two loudspeaker outputs as a
+// single Bridge Tied Load output getting higher output power.
+
+&nau8822_1a {
+	nuvoton,spk-btl;
+};

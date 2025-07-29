@@ -1,0 +1,94 @@
+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
+/*
+ * Copyright 2020-2022 Silmates
+ */
+
+// DSI to HDMI Adapter.
+
+/dts-v1/;
+/plugin/;
+
+#include <dt-bindings/gpio/gpio.h>
+
+/ {
+	compatible = "silmates,imx8mm-mez";
+};
+
+&{/} {
+	reg_dsi_hdmi: regulator-dsi-hdmi {
+		compatible = "regulator-fixed";
+		enable-active-high;
+		gpio = <&gpio5 1 GPIO_ACTIVE_HIGH>;
+		regulator-boot-on;
+		regulator-name = "DSI_1_PWR_EN";
+	};
+};
+
+&gpu {
+	status = "okay";
+};
+
+&hdmi_lontium_lt8912 {
+	vdd-supply = <&reg_dsi_hdmi>;
+	status = "okay";
+
+	ports {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		port@0 {
+			reg = <0>;
+
+			lt8912_1_in: endpoint {
+				data-lanes = <1 2 3 4>;
+				remote-endpoint = <&mipi_dsi_bridge1_out>;
+			};
+		};
+
+		port@1 {
+			reg = <1>;
+
+			lt8912_1_out: endpoint {
+				remote-endpoint = <&hdmi_connector_in>;
+			};
+		};
+	};
+};
+
+&hdmi_connector {
+	status = "okay";
+
+	port {
+		hdmi_connector_in: endpoint {
+			remote-endpoint = <&lt8912_1_out>;
+		};
+	};
+};
+
+/* I2C_2_DSI */
+&i2c2 {
+	/* Lower frequency to avoid DDC/EDID issues with certain displays/screens. */
+	clock-frequency = <10000>;
+	status = "okay";
+};
+
+&lcdif {
+	status = "okay";
+};
+
+&mipi_dsi {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	status = "okay";
+
+	port@1 {
+		mipi_dsi_bridge1_out: endpoint {
+			attach-bridge;
+			remote-endpoint = <&lt8912_1_in>;
+		};
+	};
+};
+
+&pwm1 {
+	status = "disabled";
+};
